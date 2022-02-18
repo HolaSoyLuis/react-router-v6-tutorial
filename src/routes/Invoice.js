@@ -1,15 +1,23 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { getInvoice, deleteInvoice } from '../data';
 
+// Personal addition
+import { useSearchParams, useLocation } from 'react-router-dom';
+
 export default function Invoice(){
     let params = useParams();
+    // We'll do search params persistent when delete an invoice
+    let [searchParams] = useSearchParams();
+    let location = useLocation();
     let navigate = useNavigate();
     let invoice = getInvoice(parseInt(params.invoice_id));
 
     const deleteButton = () => {
         deleteInvoice(invoice.number);
         console.log('Invoice number:', invoice.number, 'has been deleted');
-        navigate("/invoices");
+        navigate("/invoices" + location.search);
+        // SUCCESS
+        // now when search parameters are set, it persists when you delete an invoice :D
     }
 
     return (
